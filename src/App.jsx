@@ -54,9 +54,23 @@ function App() {
     });
   }
 
-  const selectedProject = projectsState.projects.find(project => project.id === projectsState.selectProjectId);
+  function handleDeleteProject() {
+    setProjectsState(prevState => {
+      return {
+        ...prevState,
+        selectProjectId: undefined,
+        projects: prevState.projects.filter(
+          (project) => project.id !== prevState.selectProjectId
+        )  
+      };
+    });
+  }
 
-  let content = <SelectedProject project={selectedProject} />;
+  const selectedProject = projectsState.projects.find(
+    project => project.id === projectsState.selectProjectId
+  );
+
+  let content = <SelectedProject project={selectedProject} onDelete={handleDeleteProject} />;
 
   if (projectsState.selectProjectId === null) {
     content = <NewProject onAdd={handleAddProject} onCancel={handleCancelAddProject} />
